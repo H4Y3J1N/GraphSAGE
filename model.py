@@ -1,8 +1,6 @@
 import torch
 import torch.nn.functional as F
 from tqdm import tqdm
-from torch_geometric.datasets import Reddit
-from torch_geometric.data import NeighborSampler
 from torch_geometric.nn import SAGEConv
 
 
@@ -26,7 +24,7 @@ class GraphSAGE(torch.nn.Module):
                 x = F.dropout(x, p=0.5, training=self.training)
         return x.log_softmax(dim=-1)
 
-    def inference(self, x_all):
+    def inference(self, x_all, subgraph_loader, device):
         pbar = tqdm(total=x_all.size(0) * self.num_layers)
         pbar.set_description('Evaluating')
 
